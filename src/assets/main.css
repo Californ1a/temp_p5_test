@@ -1,0 +1,66 @@
+@import './base.css';
+
+input, select{
+  border: none;
+  min-width: 8rem;
+}
+
+input:hover, select:hover{
+  background-color: #AAAAAA;
+}
+
+input[type=button]{
+  min-height: 2rem;
+  min-width: 7rem;
+}
+
+#viewFrac_canvasA, #viewFrac_canvasB, .controls{
+  margin: 0%;
+  padding: 0%;
+  border: 1px solid #000000;
+  height: 600px;
+  width: 600px;
+}
+
+#viewFrac_statusBarA, #viewFrac_statusBarB{
+	background-color: rgb(72, 84, 255);
+	width: 600px;
+	height: 5px;
+  margin-bottom: 0px;
+	text-align: center;
+}
+
+
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  font-weight: normal;
+}
+
+
+@media (min-width: 1024px) {
+  body {
+    display: flex;
+    place-items: center;
+
+    background-color: rgb(120, 120, 120);
+    color: rgb(0, 0, 0);
+    font-family: "Trebuchet MS", "Rockwell", "Bebas Neue";
+    overflow: auto;
+  }
+
+  input, select{
+    float: right;
+  }
+  label{
+	  float: left;
+  }
+
+  #app {
+    /*display: grid;
+    grid-template-columns: 1fr 1fr;*/
+    padding: 0 2rem;
+  }
+}
