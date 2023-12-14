@@ -6,8 +6,9 @@ import Julia from './fractals/Julia.vue';
 import TEST from './fractals/TEST.vue';
 //-----end import fractals-----//
 
-import { updateDescriptionText } from '../updateDescriptionText.js';
-const emit = defineEmits(['descText', 'changeCanvas']);
+// import { updateDescriptionText } from '../updateDescriptionText.js';
+
+const emit = defineEmits(['changeCanvas']);
 const props = defineProps({
 	canvas: HTMLCanvasElement,
 	context: CanvasRenderingContext2D,
@@ -23,7 +24,7 @@ let currentFrac = ref(""); //stores currently selected fractal
 </script>
 
 <template>
-	<div @mouseover="emit('descText', updateDescriptionText('Select which fractal you wish to render'))" @mouseleave="emit('descText', updateDescriptionText(''))">
+	<div v-description="'Select which fractal you wish to render'">
 		<label for="fractalSelector">Fractal: </label>
 
 		<select v-model="currentFrac" id="fractalSelector" name="fractalSelector">
@@ -40,13 +41,13 @@ let currentFrac = ref(""); //stores currently selected fractal
 	<br /><br />
 	<div>
 		<span v-show="currentFrac==='Mandelbrot'">
-			<Mandelbrot @descText="emit('descText', $event)" :canvas="canvas" :context="context" :iterationNum="iterationNum" :boundaryNum="boundaryNum" />
+			<Mandelbrot :canvas="canvas" :context="context" :iterationNum="iterationNum" :boundaryNum="boundaryNum" />
 		</span>
 		<span v-show="currentFrac==='Julia'">
-			<Julia @descText="emit('descText', $event)" :canvas="canvas" :context="context" :iterationNum="iterationNum" :boundaryNum="boundaryNum" />
+			<Julia :canvas="canvas" :context="context" :iterationNum="iterationNum" :boundaryNum="boundaryNum" />
 		</span>
 		<span v-show="currentFrac==='TEST'">
-			<TEST @descText="emit('descText', $event)" @changeCanvas="emit('changeCanvas', $event)" :iterationNum="iterationNum" :boundaryNum="boundaryNum" />
+			<TEST @changeCanvas="emit('changeCanvas', $event)" :iterationNum="iterationNum" :boundaryNum="boundaryNum" />
 		</span>
 	</div>
 </template>

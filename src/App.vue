@@ -1,7 +1,9 @@
 <script setup>
 import { ref } from 'vue'
-import { updateDescriptionText } from './updateDescriptionText.js';
 import FractalViewer from './components/FractalViewer.vue';
+import { useStore } from '@/store';
+
+const store = useStore();
 
 const viewMode = {
 	fractal: 1,
@@ -9,7 +11,6 @@ const viewMode = {
 }
 
 let currentViewMode = ref(viewMode.fractal);
-let infoText = ref(updateDescriptionText(""));
 
 //functions
 </script>
@@ -21,12 +22,12 @@ let infoText = ref(updateDescriptionText(""));
 	<main>
 		<p id="versionNum">v0.8</p>
 		<div>
-			<FractalViewer @descText="(msg) => infoText = msg" />
+			<FractalViewer />
 		</div>
 		<table id="footer">
 			<tr>
 				<td colspan="2">
-					<p class="center-text" id="viewFrac_infoBox">{{ infoText }}</p>
+					<p class="center-text" id="viewFrac_infoBox">{{ store.descriptionText }}</p>
 				</td>
 				<td>
 					<input class="SwitchViews" type="button" value="Switch views" />

@@ -1,11 +1,11 @@
 <script setup>
 import { ref } from 'vue';
-import { updateDescriptionText } from '../updateDescriptionText.js';
 import FractalCanvas from './fractalViewerCanvas.vue';
 import FractalProperties from './ctrlPanelFracProperties.vue'
 import ctrlPanelGeneral from './ctrlPanelGeneral.vue';
+import { useStore } from '@/store';
 
-const emit = defineEmits(['descText']);
+const store = useStore();
 
 const ctrlPanelViews = {
 	canvasA: 1,
@@ -66,19 +66,19 @@ function changeCanvasB(fn) {
 				<td>
 					<table id="viewFrac_ctrlPanel">
 						<tr id="viewFrac_ctrlPanelButtonRow">
-							<td><input @mouseover="emit('descText', updateDescriptionText('View properties for the fractal to render in panel A'))" @mouseleave="emit('descText', updateDescriptionText(''))" @click="switchCtrlPanelViews(ctrlPanelViews.canvasA)" :class="{viewFrac_ctrlButton_active : ctrlPanelCurrentView == ctrlPanelViews.canvasA}" class="viewFrac_ctrlButton" type="button" value="A" /></td>
-							<td><input @mouseover="emit('descText', updateDescriptionText('View properties for the fractal to render in panel B'))" @mouseleave="emit('descText', updateDescriptionText(''))" @click="switchCtrlPanelViews(ctrlPanelViews.canvasB)" :class="{viewFrac_ctrlButton_active : ctrlPanelCurrentView == ctrlPanelViews.canvasB}" class="viewFrac_ctrlButton" type="button" value="B" /></td>
-							<td><input @mouseover="emit('descText', updateDescriptionText('View general properties that apply to all panels'))" @mouseleave="emit('descText', updateDescriptionText(''))" @click="switchCtrlPanelViews(ctrlPanelViews.general)" :class="{viewFrac_ctrlButton_active : ctrlPanelCurrentView == ctrlPanelViews.general}" class="viewFrac_ctrlButton" type="button" value="G" /></td>
+							<td><input v-description="'View properties for the fractal to render in panel A'" @click="switchCtrlPanelViews(ctrlPanelViews.canvasA)" :class="{viewFrac_ctrlButton_active : ctrlPanelCurrentView == ctrlPanelViews.canvasA}" class="viewFrac_ctrlButton" type="button" value="A" /></td>
+							<td><input v-description="'View properties for the fractal to render in panel B'" @click="switchCtrlPanelViews(ctrlPanelViews.canvasB)" :class="{viewFrac_ctrlButton_active : ctrlPanelCurrentView == ctrlPanelViews.canvasB}" class="viewFrac_ctrlButton" type="button" value="B" /></td>
+							<td><input v-description="'View general properties that apply to all panels'" @click="switchCtrlPanelViews(ctrlPanelViews.general)" :class="{viewFrac_ctrlButton_active : ctrlPanelCurrentView == ctrlPanelViews.general}" class="viewFrac_ctrlButton" type="button" value="G" /></td>
 						</tr>
 						<tr id="viewFrac_options">
 							<td v-show="ctrlPanelCurrentView === ctrlPanelViews.canvasA">
-								<FractalProperties @descText="emit('descText', $event)" @changeCanvas="changeCanvasA" :iterationNum="iteration" :boundaryNum="boundary" />
+								<FractalProperties @changeCanvas="changeCanvasA" :iterationNum="iteration" :boundaryNum="boundary" />
 							</td>
 							<td v-show="ctrlPanelCurrentView === ctrlPanelViews.canvasB">
-								<FractalProperties @descText="emit('descText', $event)" @changeCanvas="changeCanvasB" :iterationNum="iteration" :boundaryNum="boundary" />
+								<FractalProperties @changeCanvas="changeCanvasB" :iterationNum="iteration" :boundaryNum="boundary" />
 							</td>
 							<td v-show="ctrlPanelCurrentView === ctrlPanelViews.general">
-								<ctrlPanelGeneral @descText="emit('descText', $event)" @iterationNum="(msg) => iteration = msg" @resolutionNum="(msg) => resolution = msg" @boundaryNum="(msg) => boundary = msg" />
+								<ctrlPanelGeneral @iterationNum="(msg) => iteration = msg" @resolutionNum="(msg) => resolution = msg" @boundaryNum="(msg) => boundary = msg" />
 							</td>
 						</tr>
 					</table>
