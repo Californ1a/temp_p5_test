@@ -5,9 +5,8 @@
   import { ref } from 'vue';
   import { updateDescriptionText } from '../../updateDescriptionText.js';
   import { colorFractalBefore, colorFractalAfter, UpdateColorPalettes, coloringMethods, palettes } from '../coloringMethods.js';
-  const emit = defineEmits(['descText']);
+  const emit = defineEmits(['descText', 'changeCanvas']);
   const props = defineProps({
-      sketch: Object,
       iterationNum: Number,
       boundaryNum: Number,
   });
@@ -42,11 +41,11 @@
   }
 
   //fractal rendering function
-  function Render(sketch, maxIterations, boundary){
+  function Render(maxIterations, boundary){
     console.log("Rendering TEST");
 
 
-    sketch.draw = () => {
+    emit('changeCanvas', (sketch) => {
       sketch.pixelDensity(1);
       sketch.loadPixels();
 
@@ -75,7 +74,7 @@
       }
 
       sketch.updatePixels();
-    }
+    });
 
     //complete fractal rendering
     console.log("Rendering Finished");
@@ -188,7 +187,7 @@
   <br/>
   <div id="footer">
     <input id="resetButton" @mouseover="emit('descText', updateDescriptionText('Resets the properties to their default values'))" @mouseleave="emit('descText', updateDescriptionText(''))" @click="reset()" type="button" value="Reset" />
-    <input id="renderButton" @mouseover="emit('descText', updateDescriptionText('Renders the fractal with all of its properties in the corrisponding panel'))" @mouseleave="emit('descText', updateDescriptionText(''))" @click="Render(sketch, iterationNum, boundaryNum)" type="button" value="Render" />
+    <input id="renderButton" @mouseover="emit('descText', updateDescriptionText('Renders the fractal with all of its properties in the corrisponding panel'))" @mouseleave="emit('descText', updateDescriptionText(''))" @click="Render(iterationNum, boundaryNum)" type="button" value="Render" />
   </div>
 </template>
 

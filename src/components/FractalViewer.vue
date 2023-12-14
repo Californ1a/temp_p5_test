@@ -22,8 +22,8 @@
   const canvasB = ref(null);
   const contextB = ref(null);*/
   //store p5 data
-  const p5A = ref(null);
-  const p5B = ref(null);
+  const firstCanvasDraw = ref(null);
+  const secondCanvasDraw = ref(null);
 
   //store general ctrl panel values
   const iteration = ref(null);
@@ -33,6 +33,14 @@
   //functions
   function switchCtrlPanelViews(value){
     ctrlPanelCurrentView.value = value;
+  }
+
+  function changeCanvasA(fn) {
+    firstCanvasDraw.value = fn;
+  }
+
+  function changeCanvasB(fn) {
+    secondCanvasDraw.value = fn;
   }
 </script>
 
@@ -49,8 +57,8 @@
           <td id="viewFrac_statusBarB"></td>
         </tr>
         <tr>
-          <td><FractalCanvas @getp5="(msg) => p5A = msg" @getCanvas="(msg) => canvasA = msg" @getContext="(msg) => contextA = msg" :resolutionMulti="resolution" id="viewFrac_A"/></td>
-          <td><FractalCanvas @getp5="(msg) => p5B = msg" @getCanvas="(msg) => canvasB = msg" @getContext="(msg) => contextB = msg" :resolutionMulti="resolution" id="viewFrac_B"/></td>
+          <td><FractalCanvas :draw="firstCanvasDraw" :resolutionMulti="resolution" id="viewFrac_A"/></td>
+          <td><FractalCanvas :draw="secondCanvasDraw" :resolutionMulti="resolution" id="viewFrac_B"/></td>
           <td>
             <table id="viewFrac_ctrlPanel">
               <tr id="viewFrac_ctrlPanelButtonRow">
@@ -59,9 +67,9 @@
                 <td><input @mouseover="emit('descText', updateDescriptionText('View general properties that apply to all panels'))" @mouseleave="emit('descText', updateDescriptionText(''))" @click="switchCtrlPanelViews(ctrlPanelViews.general)" :class="{viewFrac_ctrlButton_active : ctrlPanelCurrentView == ctrlPanelViews.general}" class="viewFrac_ctrlButton" type="button" value="G" /></td>
               </tr>
               <tr id="viewFrac_options">
-                <td v-show="ctrlPanelCurrentView === ctrlPanelViews.canvasA"><FractalProperties @descText="(msg) => emit('descText', msg)" :sketch="p5A" :iterationNum="iteration" :boundaryNum="boundary" /></td>
-                <td v-show="ctrlPanelCurrentView === ctrlPanelViews.canvasB"><FractalProperties @descText="(msg) => emit('descText', msg)" :sketch="p5B" :iterationNum="iteration" :boundaryNum="boundary" /></td>
-                <td v-show="ctrlPanelCurrentView === ctrlPanelViews.general"><ctrlPanelGeneral @descText="(msg) => emit('descText', msg)" @iterationNum="(msg) => iteration = msg" @resolutionNum="(msg) => resolution = msg" @boundaryNum="(msg) => boundary = msg" /></td>
+                <td v-show="ctrlPanelCurrentView === ctrlPanelViews.canvasA"><FractalProperties @descText="emit('descText', $event)" @changeCanvas="changeCanvasA" :iterationNum="iteration" :boundaryNum="boundary" /></td>
+                <td v-show="ctrlPanelCurrentView === ctrlPanelViews.canvasB"><FractalProperties @descText="emit('descText', $event)" @changeCanvas="changeCanvasB" :iterationNum="iteration" :boundaryNum="boundary" /></td>
+                <td v-show="ctrlPanelCurrentView === ctrlPanelViews.general"><ctrlPanelGeneral @descText="emit('descText', $event)" @iterationNum="(msg) => iteration = msg" @resolutionNum="(msg) => resolution = msg" @boundaryNum="(msg) => boundary = msg" /></td>
               </tr>
             </table>
           </td>
