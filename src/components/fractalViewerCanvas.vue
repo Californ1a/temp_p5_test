@@ -5,6 +5,10 @@
   const emit = defineEmits(['getp5']);
   const props = defineProps({
     resolutionMulti: Number,
+    draw: {
+      type: Function,
+      default: () => {},
+    }
   });
 
   const width = ref(600);
@@ -23,6 +27,12 @@
       sketch.setup = () => {
         sketch.createCanvas(600, 600, sketch.WEBGL).parent(divCanvas.value);
         emit('getp5', sketch);
+      };
+
+      sketch.draw = () => {
+        if (props.draw && typeof props.draw === 'function') {
+          props.draw(sketch);
+        }
       };
     });
 

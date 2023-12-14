@@ -7,9 +7,8 @@
     //-----end import fractals-----//
 
     import { updateDescriptionText } from '../updateDescriptionText.js';
-    const emit = defineEmits(['descText']);
+    const emit = defineEmits(['descText', 'changeCanvas']);
     const props = defineProps({
-        sketch: Object,
         canvas: HTMLCanvasElement,
         context: CanvasRenderingContext2D,
         iterationNum: Number,
@@ -41,9 +40,9 @@
     </div>
     <br/><br/>
     <div>
-        <span v-show="currentFrac==='Mandelbrot'"><Mandelbrot @descText="(msg) => emit('descText', msg)" :canvas="canvas" :context="context" :iterationNum="iterationNum" :boundaryNum="boundaryNum" /></span>
-        <span v-show="currentFrac==='Julia'"><Julia @descText="(msg) => emit('descText', msg)" :canvas="canvas" :context="context" :iterationNum="iterationNum" :boundaryNum="boundaryNum" /></span>
-        <span v-show="currentFrac==='TEST'"><TEST @descText="(msg) => emit('descText', msg)" :sketch="sketch" :iterationNum="iterationNum" :boundaryNum="boundaryNum" /></span>
+        <span v-show="currentFrac==='Mandelbrot'"><Mandelbrot @descText="emit('descText', $event)" :canvas="canvas" :context="context" :iterationNum="iterationNum" :boundaryNum="boundaryNum" /></span>
+        <span v-show="currentFrac==='Julia'"><Julia @descText="emit('descText', $event)" :canvas="canvas" :context="context" :iterationNum="iterationNum" :boundaryNum="boundaryNum" /></span>
+        <span v-show="currentFrac==='TEST'"><TEST @descText="emit('descText', $event)" @changeCanvas="emit('changeCanvas', $event)" :iterationNum="iterationNum" :boundaryNum="boundaryNum" /></span>
     </div>
 </template>
 
